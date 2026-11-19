@@ -1,0 +1,9 @@
+{
+  "name": "tiennhatro-app",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix frontend run build",
+    "dev": "npx --yes wrangler@4.165.0 dev",
+    "deploy": "bash cloudflare/deploy.sh"
+  }
+}

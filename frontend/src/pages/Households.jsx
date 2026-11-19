@@ -8,15 +8,19 @@ const money = value => value ? `${Number(value).toLocaleString('vi-VN')} đ` : '
 
 function HouseholdForm({ open, onCancel, onSaved, initial }) {
   const [form] = Form.useForm()
-  useEffect(() => { form.setFieldsValue(initial || { priceOverrides: {}, initialMeters: {} }) }, [initial, form, open])
+  useEffect(() => {
+    if (!open) return
+    form.resetFields()
+    if (initial) form.setFieldsValue(initial)
+  }, [initial, form, open])
   return <Modal open={open} onCancel={onCancel} onOk={() => form.validateFields().then(onSaved)} okText={initial ? 'Lưu thay đổi' : 'Thêm hộ'} cancelText="Huỷ" title={initial ? 'Chỉnh sửa hộ thuê' : 'Thêm hộ thuê mới'} width={660}>
     <Form form={form} layout="vertical"><Row gutter={14}>
       <Col xs={24} sm={12}><Form.Item name="name" label="Tên người thuê / hộ gia đình" rules={[{ required: true, message: 'Vui lòng nhập tên' }]}><Input placeholder="Ví dụ: Nguyễn Văn An" /></Form.Item></Col>
       <Col xs={24} sm={12}><Form.Item name="room" label="Số phòng" rules={[{ required: true, message: 'Vui lòng nhập số phòng' }]}><Input placeholder="Ví dụ: P.101" /></Form.Item></Col>
       <Col xs={24}><Form.Item name="phone" label="Số điện thoại"><Input prefix={<PhoneOutlined />} placeholder="Nhập số điện thoại liên hệ" /></Form.Item></Col>
-    </Row><div className="form-section-title">Chỉ số bàn giao đầu kỳ</div><p className="form-section-hint">Dành cho người thuê mới. Chỉ số này sẽ được dùng làm chỉ số cũ của phiếu tháng đầu tiên.</p><Row gutter={14}>
-      <Col xs={24} sm={12}><Form.Item name={['initialMeters', 'electric']} label="Chỉ số điện lúc nhận phòng"><InputNumber min={0} precision={0} className="full-width" placeholder="Ví dụ: 13.500" /></Form.Item></Col>
-      <Col xs={24} sm={12}><Form.Item name={['initialMeters', 'water']} label="Chỉ số nước lúc nhận phòng"><InputNumber min={0} precision={0} className="full-width" placeholder="Ví dụ: 250" /></Form.Item></Col>
+    </Row><div className="form-section-title">Chỉ số bàn giao đầu kỳ</div><p className="form-section-hint">{initial?.opening ? 'Chỉ số bàn giao được quản lý trong Audit đầu kỳ.' : 'Chỉ số này sẽ được dùng cho phiếu tháng đầu tiên.'}</p><Row gutter={14}>
+      <Col xs={24} sm={12}><Form.Item name={['initialMeters', 'electric']} label="Chỉ số điện lúc nhận phòng"><InputNumber disabled={!!initial?.opening} min={0} className="full-width" placeholder="Ví dụ: 13.500" /></Form.Item></Col>
+      <Col xs={24} sm={12}><Form.Item name={['initialMeters', 'water']} label="Chỉ số nước lúc nhận phòng"><InputNumber disabled={!!initial?.opening} min={0} className="full-width" placeholder="Ví dụ: 250" /></Form.Item></Col>
     </Row><div className="form-section-title">Giá áp dụng riêng (không bắt buộc)</div><Row gutter={14}>
       <Col xs={24} sm={8}><Form.Item name={['priceOverrides', 'electric']} label="Giá điện / kWh"><InputNumber min={0} className="full-width" placeholder="Theo cấu hình" /></Form.Item></Col>
       <Col xs={24} sm={8}><Form.Item name={['priceOverrides', 'water']} label="Giá nước / m³"><InputNumber min={0} className="full-width" placeholder="Theo cấu hình" /></Form.Item></Col>

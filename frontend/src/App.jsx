@@ -1,22 +1,25 @@
 import React from 'react'
 import { Layout, Menu, Drawer, Button, Avatar } from 'antd'
-import { BarChartOutlined, TeamOutlined, FileTextOutlined, SettingOutlined, MenuOutlined, HomeOutlined } from '@ant-design/icons'
+import { AuditOutlined, BarChartOutlined, TeamOutlined, FileTextOutlined, SettingOutlined, MenuOutlined, HomeOutlined } from '@ant-design/icons'
 import Config from './pages/Config'
 import Households from './pages/Households'
 import Billing from './pages/Billing'
 import Dashboard from './pages/Dashboard'
+import OpeningAudit from './pages/OpeningAudit'
 
 const { Header, Sider, Content } = Layout
 const pages = {
   dashboard: { title: 'Tổng quan', subtitle: 'Theo dõi thu chi nhà trọ theo từng tháng' },
   households: { title: 'Hộ gia đình', subtitle: 'Quản lý thông tin người thuê và giá riêng' },
   billing: { title: 'Phiếu thu hàng tháng', subtitle: 'Lập, tra cứu và gửi phiếu thanh toán' },
+  opening: { title: 'Audit đầu kỳ', subtitle: 'Ghi nhận số liệu bàn giao theo hộ thuê' },
   config: { title: 'Thiết lập đơn giá', subtitle: 'Đơn giá mặc định áp dụng cho các hộ' },
 }
 const menuItems = [
   { key: 'dashboard', icon: <BarChartOutlined />, label: 'Tổng quan' },
   { key: 'households', icon: <TeamOutlined />, label: 'Hộ gia đình' },
   { key: 'billing', icon: <FileTextOutlined />, label: 'Phiếu thu' },
+  { key: 'opening', icon: <AuditOutlined />, label: 'Đầu kỳ' },
   { key: 'config', icon: <SettingOutlined />, label: 'Thiết lập giá' },
 ]
 
@@ -44,6 +47,7 @@ export default function App() {
         {selected === 'dashboard' && <Dashboard onNavigate={go} />}
         {selected === 'households' && <Households />}
         {selected === 'billing' && <Billing />}
+        {selected === 'opening' && <OpeningAudit />}
         {selected === 'config' && <Config />}
       </Content>
     </Layout>

@@ -1,0 +1,7 @@
+node_modules/
+/backend/
+frontend/dist/
+.wrangler/
+.dev.vars*
+.env*
+*.backup.json
