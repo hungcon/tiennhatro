@@ -1,0 +1,31 @@
+services:
+  backend:
+    container_name: be
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend/mongo-data:/data/db
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/tiennhatro
+    depends_on:
+      - mongo
+
+  frontend:
+    container_name: fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+  mongo:
+    image: mongo:6.0
+    volumes:
+      - ./backend/mongo-data:/data/db
+    ports:
+      - "27017:27017"
